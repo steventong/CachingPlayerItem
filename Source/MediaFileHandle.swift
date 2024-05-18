@@ -19,8 +19,10 @@ final class MediaFileHandle {
 
     init(filePath: String) {
         // append temp extension
-        self.filePath = filePath + "." + UUID().uuidString
+        self.filePath = "\(filePath).\(UUID().uuidString)"
 
+        print("self.filePath: \(self.filePath)")
+        
         if !FileManager.default.fileExists(atPath: self.filePath) {
             FileManager.default.createFile(atPath: self.filePath, contents: nil, attributes: nil)
         } else {
