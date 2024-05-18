@@ -18,7 +18,8 @@ final class MediaFileHandle {
     // MARK: Init
 
     init(filePath: String) {
-        self.filePath = filePath
+        // append temp extension
+        self.filePath = filePath + "." + UUID().uuidString
 
         if !FileManager.default.fileExists(atPath: filePath) {
             FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
@@ -37,7 +38,7 @@ final class MediaFileHandle {
 // MARK: Internal methods
 
 extension MediaFileHandle {
-    var attributes: [FileAttributeKey : Any]? {
+    var attributes: [FileAttributeKey: Any]? {
         do {
             return try FileManager.default.attributesOfItem(atPath: filePath)
         } catch let error as NSError {
@@ -75,6 +76,10 @@ extension MediaFileHandle {
         guard let writeHandle = writeHandle else { return }
 
         writeHandle.synchronizeFile()
+    }
+    
+    func saveTempFile() {
+        print("saveTempFile: \(filePath)")
     }
 
     func close() {

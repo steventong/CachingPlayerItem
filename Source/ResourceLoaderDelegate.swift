@@ -176,6 +176,7 @@ final class ResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URL
         processPendingRequests()
 
         isDownloadComplete = true
+        fileHandle.saveTempFile()
 
         DispatchQueue.main.async {
             self.owner?.delegate?.playerItem?(self.owner!, didFinishDownloadingFileAt: self.saveFilePath)
