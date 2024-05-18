@@ -22,7 +22,7 @@ final class MediaFileHandle {
         self.filePath = "\(filePath).\(UUID().uuidString)"
 
         print("self.filePath: \(self.filePath)")
-        
+
         if !FileManager.default.fileExists(atPath: self.filePath) {
             FileManager.default.createFile(atPath: self.filePath, contents: nil, attributes: nil)
         } else {
@@ -81,7 +81,21 @@ extension MediaFileHandle {
     }
 
     func saveTempFile() {
-        print("saveTempFile: \(filePath)")
+        if let saveTempFileUrl = URL(string: filePath) {
+            let tmpExtension = saveTempFileUrl.pathExtension
+            if tmpExtension.count == 36 {
+                let newFilePath = filePath.split(separator: ".").dropLast().joined(separator: ".")
+                if let newFileUrl = URL(string: newFilePath) {
+                    // 修改文件名称
+                    do {
+                        try FileManager.default.moveItem(at: saveTempFileUrl, to: newFileUrl)
+                        print("saveTempFile: \(filePath) to \(newFilePath)")
+                    } catch {
+                        print("Error renaming file: \(error)")
+                    }
+                }
+            }
+        }
     }
 
     func close() {
