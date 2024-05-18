@@ -81,6 +81,12 @@ extension MediaFileHandle {
     }
 
     func saveTempFile() {
+        guard filePath.split(separator: ".").last?.count == 36 else {
+            print("temp file extension not an uuid: \(filePath)")
+            try? FileManager.default.removeItem(atPath: filePath)
+            return
+        }
+
         let destinationPath = filePath.split(separator: ".").dropLast().joined(separator: ".")
         do {
             // 检查目标路径是否已经存在文件，如果存在则删除它
