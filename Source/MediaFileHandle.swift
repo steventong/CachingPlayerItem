@@ -21,15 +21,15 @@ final class MediaFileHandle {
         // append temp extension
         self.filePath = filePath + "." + UUID().uuidString
 
-        if !FileManager.default.fileExists(atPath: filePath) {
-            FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
+        if !FileManager.default.fileExists(atPath: self.filePath) {
+            FileManager.default.createFile(atPath: self.filePath, contents: nil, attributes: nil)
         } else {
-            print("CachingPlayerItem warning: File already exists at \(filePath). A non empty file can cause unexpected behavior.")
+            print("CachingPlayerItem warning: File already exists at \(self.filePath). A non empty file can cause unexpected behavior.")
         }
     }
 
     deinit {
-        guard FileManager.default.fileExists(atPath: filePath) else { return }
+        guard FileManager.default.fileExists(atPath: self.filePath) else { return }
 
         close()
     }
@@ -77,7 +77,7 @@ extension MediaFileHandle {
 
         writeHandle.synchronizeFile()
     }
-    
+
     func saveTempFile() {
         print("saveTempFile: \(filePath)")
     }
