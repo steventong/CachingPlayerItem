@@ -81,20 +81,19 @@ extension MediaFileHandle {
     }
 
     func saveTempFile() {
-        if let saveTempFileUrl = URL(string: filePath) {
-            let tmpExtension = saveTempFileUrl.pathExtension
-            if tmpExtension.count == 36 {
-                let newFilePath = filePath.split(separator: ".").dropLast().joined(separator: ".")
-                if let newFileUrl = URL(string: newFilePath) {
-                    // 修改文件名称
-                    do {
-                        try FileManager.default.moveItem(at: saveTempFileUrl, to: newFileUrl)
-                        print("saveTempFile: \(filePath) to \(newFilePath)")
-                    } catch {
-                        print("Error renaming file: \(error)")
-                    }
-                }
+        let destinationPath = filePath.split(separator: ".").dropLast().joined(separator: ".")
+        do {
+            // 检查目标路径是否已经存在文件，如果存在则删除它
+            if FileManager.default.fileExists(atPath: destinationPath) {
+                try FileManager.default.removeItem(atPath: destinationPath)
             }
+
+            // 移动并重命名文件
+            try FileManager.default.moveItem(atPath: filePath, toPath: destinationPath)
+
+            print("文件移动并重命名成功！\(destinationPath)")
+        } catch {
+            print("文件移动或重命名时出错: \(error)")
         }
     }
 
