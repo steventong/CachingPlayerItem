@@ -30,9 +30,9 @@ final class ResourceLoaderDelegate: NSObject, AVAssetResourceLoaderDelegate, URL
 
     // MARK: Init
 
-    init(url: URL, saveFilePath: String, owner: CachingPlayerItem?) {
+    init(url: URL, saveFilePath: String?, owner: CachingPlayerItem?) {
         self.url = url
-        self.saveFilePath = saveFilePath
+        self.saveFilePath = saveFilePath ?? ""
         self.owner = owner
         super.init()
 
